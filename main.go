@@ -29,6 +29,7 @@ func main() {
 	router.HandleFunc("/customer/{id}", GetCustomer).Methods("GET")
 	router.HandleFunc("/customer", PostCustomer).Methods("POST")
 	router.HandleFunc("/customer/{id}", DeleteCustomer).Methods("DELETE")
+
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
@@ -61,7 +62,7 @@ func PostCustomer(w http.ResponseWriter, r *http.Request) {
 	id := (len(customers) + 1)
 	customer.ID = id
 	customers = append(customers, customer)
-	json.NewEncoder(w).Encode(customers)
+	json.NewEncoder(w).Encode(customer.ID)
 }
 
 //DeleteCustomer Delete a customer by id
@@ -76,6 +77,7 @@ func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
 
 	var newcustomers []Customer
 
+	// redneck solution
 	for index, item := range customers {
 		if item.ID != i {
 			newcustomers = append(newcustomers, customers[index])
