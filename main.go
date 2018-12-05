@@ -28,7 +28,9 @@ func main() {
 	router.HandleFunc("/customer", GetCustomers).Methods("GET")
 	router.HandleFunc("/customer/{id}", GetCustomer).Methods("GET")
 	router.HandleFunc("/customer", PostCustomer).Methods("POST")
+	router.HandleFunc("/customer/{id}", PutCustomer).Methods("PUT")
 	router.HandleFunc("/customer/{id}", DeleteCustomer).Methods("DELETE")
+
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
@@ -61,7 +63,33 @@ func PostCustomer(w http.ResponseWriter, r *http.Request) {
 	id := (len(customers) + 1)
 	customer.ID = id
 	customers = append(customers, customer)
-	json.NewEncoder(w).Encode(customers)
+	json.NewEncoder(w).Encode(customer.ID)
+}
+
+//PutCustomer Update a customer
+func PutCustomer(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+
+	i, err := strconv.Atoi(params["id"])
+	if err != nil {
+		log.Fatal("Invalid param id")
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	var customer Customer
+	_ = json.NewDecoder(r.Body).Decode(&customer)
+
+	for index, item := range customers {
+		if item.ID == i {
+
+			item.Firstname = customer.Firstname
+			item.Lastname = customer.Lastname
+
+			customers[index] = item
+
+			json.NewEncoder(w).Encode(customers)
+		}
+	}
 }
 
 //DeleteCustomer Delete a customer by id
@@ -76,6 +104,7 @@ func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
 
 	var newcustomers []Customer
 
+	// redneck solution
 	for index, item := range customers {
 		if item.ID != i {
 			newcustomers = append(newcustomers, customers[index])
