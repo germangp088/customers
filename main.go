@@ -74,15 +74,6 @@ func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
-	/*for index, item := range customers {
-		if item.ID != i {
-			customers = append(customers[:index], customers[index+1:]...)
-			break
-		}
-	}
-
-	json.NewEncoder(w).Encode(customers)*/
-
 	var newcustomers []Customer
 
 	for index, item := range customers {
