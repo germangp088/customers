@@ -1,3 +1,4 @@
+//go:generate swagger generate spec
 package customer
 
 import (
@@ -9,11 +10,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//Type os customers
+//Type of customers
+// swagger:model
 type Customer struct {
-	ID        int    `json:"id,omitempty"`
+	// the id for this customer
+	//
+	// required: true
+	// min: 1
+	ID int `json:"id,omitempty"`
+	// the name for this customer
+	// required: true
 	Firstname string `json:"firstname,omitempty"`
-	Lastname  string `json:"lastname,omitempty"`
+	// the lastname for this customer
+	// required: true
+	Lastname string `json:"lastname,omitempty"`
 }
 
 var customers []Customer
@@ -28,6 +38,23 @@ func Init() {
 
 //GetCustomers Get all customers
 func GetCustomers(w http.ResponseWriter, r *http.Request) {
+	// swagger:route GET /customer customers
+	//
+	// GetCustomers Get all customers
+	//
+	// This will show all available customers by default.
+	//
+	//     Consumes:
+	//     - application/json
+	//
+	//     Produces:
+	//     - application/json
+	//
+	//     Schemes: http
+	//
+	//
+	//     Responses:
+	//       200: []Customer
 	json.NewEncoder(w).Encode(customers)
 }
 
