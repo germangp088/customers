@@ -10,6 +10,30 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// HTTP status code 200 and repository model in data
+// swagger:response repoResp
+type swaggRepoResp struct {
+	// in:body
+	Body struct {
+		// HTTP status code 200/201
+		Code int `json:"code"`
+		// Repository model
+		Data int `json:"id"`
+	}
+}
+
+// HTTP status code 500/400
+// swagger:response error
+type swaggRepoRespError struct {
+	// in:body
+	Body struct {
+		// HTTP status code 200/201
+		Code int `json:"code"`
+		// Repository model
+		Data string `json:"error"`
+	}
+}
+
 //Customer Struct of customers
 // swagger:model
 type Customer struct {
@@ -25,6 +49,10 @@ type Customer struct {
 	// required: true
 	Lastname string `json:"lastname,omitempty"`
 }
+
+// Customers Customers contains information about customers available for public API
+// swagger:model Customers
+type Customers []*Customer
 
 var customers []Customer
 
@@ -52,11 +80,10 @@ func GetCustomers(w http.ResponseWriter, r *http.Request) {
 	//
 	//     Schemes: http
 	//
-	//
 	//     Responses:
 	//       200: []Customer
-	//  	 400: badReq
-	//  	 500: internal
+	//  	 400: swaggRepoRespError
+	//  	 500: swaggRepoRespError
 	json.NewEncoder(w).Encode(customers)
 }
 
@@ -76,10 +103,9 @@ func GetCustomer(w http.ResponseWriter, r *http.Request) {
 	//   "200":
 	//     "$ref": "#/definitions/Customer"
 	//   "400":
-	//     "$ref": "#/responses/badReq"
+	//     "$ref": "#/responses/error"
 	//   "500":
-	//     "$ref": "#/responses/internal"
-
+	//     "$ref": "#/responses/error"
 	params := mux.Vars(r)
 
 	i, err := strconv.Atoi(params["id"])
@@ -97,6 +123,25 @@ func GetCustomer(w http.ResponseWriter, r *http.Request) {
 
 //PostCustomer Add a new customer
 func PostCustomer(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation POST /customer customer Customer
+	// ---
+	// summary: Add new customer.
+	// parameters:
+	// - name: Firstname
+	//   in: body
+	//   description: Firstname
+	//   type: string
+	//   required: true
+	// - name: Lastname
+	//   in: body
+	//   description: Lastname
+	//   type: string
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/responses/repoResp"
+	//   "500":
+	//     "$ref": "#/responses/error"
 
 	var customer Customer
 	_ = json.NewDecoder(r.Body).Decode(&customer)
@@ -108,6 +153,24 @@ func PostCustomer(w http.ResponseWriter, r *http.Request) {
 
 //PutCustomer Update a customer
 func PutCustomer(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation PUT /customer/{id} customer Customer
+	// ---
+	// summary: Update customer by id.
+	// description: If id is not valid, Error Not Found (400) will be returned.
+	// parameters:
+	// - name: id
+	//   in: /customer/{id}
+	//   description: customer id
+	//   type: string
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/definitions/Customers"
+	//   "400":
+	//     "$ref": "#/responses/error"
+	//   "500":
+	//     "$ref": "#/responses/error"
+
 	params := mux.Vars(r)
 
 	i, err := strconv.Atoi(params["id"])
@@ -134,6 +197,23 @@ func PutCustomer(w http.ResponseWriter, r *http.Request) {
 
 //DeleteCustomer Delete a customer by id
 func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation DELETE /customer/{id} customer Customer
+	// ---
+	// summary: Delete customer by id.
+	// description: If id is not valid, Error Not Found (400) will be returned.
+	// parameters:
+	// - name: id
+	//   in: /customer/{id}
+	//   description: customer id
+	//   type: string
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/definitions/Customers"
+	//   "400":
+	//     "$ref": "#/responses/error"
+	//   "500":
+	//     "$ref": "#/responses/error"
 	params := mux.Vars(r)
 
 	i, err := strconv.Atoi(params["id"])

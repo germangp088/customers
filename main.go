@@ -13,7 +13,7 @@
 //     Schemes: http
 //     Host: localhost:8080
 //     Version: 0.0.1
-//     Contact: John Doe<john.doe@example.com> http://john.doe.com
+//     Contact: German Dario<germangp088@gmail.com> http://google.com
 //
 //     Consumes:
 //     - application/json
