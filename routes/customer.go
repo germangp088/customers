@@ -64,6 +64,12 @@ func Init() {
 	customers = append(customers, Customer{ID: 4, Firstname: "Sherman", Lastname: "Dario"})
 }
 
+func setupResponse(w *http.ResponseWriter, req *http.Request) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+	(*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE")
+	(*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 //GetCustomers Get all customers
 func GetCustomers(w http.ResponseWriter, r *http.Request) {
 	// swagger:route GET /customer customers
@@ -84,6 +90,7 @@ func GetCustomers(w http.ResponseWriter, r *http.Request) {
 	//       200: []Customer
 	//  	 400: swaggRepoRespError
 	//  	 500: swaggRepoRespError
+	setupResponse(&w, r)
 	json.NewEncoder(w).Encode(customers)
 }
 
@@ -92,10 +99,10 @@ func GetCustomer(w http.ResponseWriter, r *http.Request) {
 	// swagger:operation GET /customer/{id} customer Customer
 	// ---
 	// summary: Specific customer by id.
-	// description: If id is not valid, Error Not Found (400) will be returned.
+	// description: If id is not valid, Error Bad Request (400) will be returned.
 	// parameters:
 	// - name: id
-	//   in: /customer/{id}
+	//   in: /{id}
 	//   description: customer id
 	//   type: string
 	//   required: true
@@ -106,6 +113,7 @@ func GetCustomer(w http.ResponseWriter, r *http.Request) {
 	//     "$ref": "#/responses/error"
 	//   "500":
 	//     "$ref": "#/responses/error"
+	setupResponse(&w, r)
 	params := mux.Vars(r)
 
 	i, err := strconv.Atoi(params["id"])
@@ -142,7 +150,7 @@ func PostCustomer(w http.ResponseWriter, r *http.Request) {
 	//     "$ref": "#/responses/repoResp"
 	//   "500":
 	//     "$ref": "#/responses/error"
-
+	setupResponse(&w, r)
 	var customer Customer
 	_ = json.NewDecoder(r.Body).Decode(&customer)
 	id := (len(customers) + 1)
@@ -156,7 +164,7 @@ func PutCustomer(w http.ResponseWriter, r *http.Request) {
 	// swagger:operation PUT /customer/{id} customer Customer
 	// ---
 	// summary: Update customer by id.
-	// description: If id is not valid, Error Not Found (400) will be returned.
+	// description: If id is not valid, Error Bad Request (400) will be returned.
 	// parameters:
 	// - name: id
 	//   in: /customer/{id}
@@ -170,7 +178,7 @@ func PutCustomer(w http.ResponseWriter, r *http.Request) {
 	//     "$ref": "#/responses/error"
 	//   "500":
 	//     "$ref": "#/responses/error"
-
+	setupResponse(&w, r)
 	params := mux.Vars(r)
 
 	i, err := strconv.Atoi(params["id"])
@@ -200,7 +208,7 @@ func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
 	// swagger:operation DELETE /customer/{id} customer Customer
 	// ---
 	// summary: Delete customer by id.
-	// description: If id is not valid, Error Not Found (400) will be returned.
+	// description: If id is not valid, Error Bad Request (400) will be returned.
 	// parameters:
 	// - name: id
 	//   in: /customer/{id}
@@ -214,6 +222,7 @@ func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
 	//     "$ref": "#/responses/error"
 	//   "500":
 	//     "$ref": "#/responses/error"
+	setupResponse(&w, r)
 	params := mux.Vars(r)
 
 	i, err := strconv.Atoi(params["id"])
