@@ -10,18 +10,18 @@ import (
 	"github.com/gorilla/mux"
 )
 
-//Type of customers
+//Customer Struct of customers
 // swagger:model
 type Customer struct {
-	// the id for this customer
+	// The id for this customer
 	//
 	// required: true
 	// min: 1
 	ID int `json:"id,omitempty"`
-	// the name for this customer
+	// The name for this customer
 	// required: true
 	Firstname string `json:"firstname,omitempty"`
-	// the lastname for this customer
+	// The lastname for this customer
 	// required: true
 	Lastname string `json:"lastname,omitempty"`
 }
@@ -55,11 +55,31 @@ func GetCustomers(w http.ResponseWriter, r *http.Request) {
 	//
 	//     Responses:
 	//       200: []Customer
+	//  	 400: badReq
+	//  	 500: internal
 	json.NewEncoder(w).Encode(customers)
 }
 
 //GetCustomer Get a customer by id
 func GetCustomer(w http.ResponseWriter, r *http.Request) {
+	// swagger:operation GET /customer/{id} customer Customer
+	// ---
+	// summary: Specific customer by id.
+	// description: If id is not valid, Error Not Found (400) will be returned.
+	// parameters:
+	// - name: id
+	//   in: /customer/{id}
+	//   description: customer id
+	//   type: string
+	//   required: true
+	// responses:
+	//   "200":
+	//     "$ref": "#/definitions/Customer"
+	//   "400":
+	//     "$ref": "#/responses/badReq"
+	//   "500":
+	//     "$ref": "#/responses/internal"
+
 	params := mux.Vars(r)
 
 	i, err := strconv.Atoi(params["id"])
@@ -77,6 +97,7 @@ func GetCustomer(w http.ResponseWriter, r *http.Request) {
 
 //PostCustomer Add a new customer
 func PostCustomer(w http.ResponseWriter, r *http.Request) {
+
 	var customer Customer
 	_ = json.NewDecoder(r.Body).Decode(&customer)
 	id := (len(customers) + 1)
