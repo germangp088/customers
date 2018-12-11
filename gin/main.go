@@ -29,6 +29,11 @@ func setupRouter() *gin.Engine {
 		}
 	})
 
+	v1 := r.Group("/v1")
+	v1.GET("/ping", func(c *gin.Context) {
+		c.String(http.StatusOK, "PONG PONG YES!!")
+	})
+
 	// Authorized group (uses gin.BasicAuth() middleware)
 	// Same than:
 	// authorized := r.Group("/")
