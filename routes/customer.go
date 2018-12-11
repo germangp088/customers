@@ -94,10 +94,11 @@ func GetCustomers(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(customers)
 }
 
+//GetCustomersV1 Get all customers
 func GetCustomersV1(w http.ResponseWriter, r *http.Request) {
-	// swagger:route GET /customer customers
+	// swagger:route GET /v1/customer customers
 	//
-	// GetCustomers Get all customers
+	// GetCustomersV1 Get all customers
 	//
 	// This will show all available customers by default.
 	//
