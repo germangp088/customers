@@ -1,5 +1,6 @@
 FROM golang
 
+# GOLANG
 WORKDIR /go/src/github.com/germangp088/customers/
 COPY . .
 
@@ -8,6 +9,10 @@ RUN go install -v  github.com/gorilla/mux
 
 RUN go build .
 RUN go install
+
+# SWAGGER
+RUN swagger generate spec -o ./swagger.json --scan-models
+RUN swagger serve -F=swagger swagger.json
 
 ENTRYPOINT /go/bin/customers
 
