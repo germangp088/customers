@@ -1,15 +1,13 @@
 FROM golang
 
-WORKDIR /go/src/app
+WORKDIR /go/src/github.com/germangp088/customers/
 COPY . .
-
-ADD . /go/src/app/routes
 
 RUN go get -d -v  github.com/gorilla/mux
 RUN go install -v  github.com/gorilla/mux
 
-RUN go build -o main . 
+RUN go build -o customers . 
 
-ENTRYPOINT /go/bin/main
+ENTRYPOINT /go/bin/customers
 
 EXPOSE 8080
