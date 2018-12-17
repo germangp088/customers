@@ -1,5 +1,5 @@
 # FROM golang:1.11-windowsservercore
-FROM golang:lastest
+FROM golang
 # ENV GOPATH "C:\\Users\\gdario\\go"
 # ENV GOROOT "C:\\Go"
 
