@@ -37,6 +37,9 @@ func main() {
 
 	router := mux.NewRouter()
 
+	sh := http.StripPrefix("/swaggerui/", http.FileServer(http.Dir("./swaggerui/")))
+	router.PathPrefix("/swaggerui/").Handler(sh)
+
 	customer.Init()
 	router.HandleFunc("/customer", customer.GetCustomers).Methods("GET")
 	router.HandleFunc("/customer/{id}", customer.GetCustomer).Methods("GET")

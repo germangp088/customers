@@ -12,8 +12,7 @@ RUN go install
 
 # SWAGGER
 RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
-RUN swagger generate spec -o ./swagger.json --scan-models
-RUN swagger serve -F=swagger swagger.json
+RUN swagger generate spec -o ./swaggerui/swagger.json --scan-models
 
 ENTRYPOINT /go/bin/customers
 
