@@ -34,7 +34,11 @@ import (
 )
 
 func main() {
+	Initialize()
+}
 
+//Initialize init of services.
+func Initialize() {
 	router := mux.NewRouter()
 
 	sh := http.StripPrefix("/swaggerui/", http.FileServer(http.Dir("./swaggerui/")))
