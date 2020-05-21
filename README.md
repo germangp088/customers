@@ -27,3 +27,6 @@ $ docker run --publish 8000:8080 --detach --name bb customers:1.0
 	"Lastname": "Pencil"
 }
 ```
+
+## Swagger
+-- /{URL}//swaggerui/
