@@ -6,7 +6,8 @@ import (
 	"os"
 	"testing"
 
-	main "github.com/germangp088/customers"
+	main "customers"
+
 	"github.com/gorilla/mux"
 )
 

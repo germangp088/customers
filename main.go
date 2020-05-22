@@ -29,7 +29,9 @@ import (
 	"log"
 	"net/http"
 
-	customer "github.com/germangp088/customers/routes"
+	customer "customers/routes"
+
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -54,5 +56,10 @@ func Initialize() {
 	routerV1 := router.PathPrefix("/v1").Subrouter()
 	routerV1.HandleFunc("/customer", customer.GetCustomersV1).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	// Where ORIGIN_ALLOWED is like `scheme://dns[:port]`, or `*` (insecure)
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+
+	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(router)))
 }
