@@ -1,6 +1,6 @@
 # customers
 
-CRUD customers example on golang.
+CRUD customers example on golang and reactjs.
 
 # Run docker
 ```sh
