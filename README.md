@@ -4,8 +4,8 @@ CRUD customers example on golang.
 
 # Run docker
 ```sh
-$ docker build --tag customers:1.0 .
-$ docker run --publish 8000:8080 --detach --name bb customers:1.0
+$ docker-compose build
+$ docker-compose up
 ```
 
 ###### ENDPOINTS
